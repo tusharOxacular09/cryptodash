@@ -321,9 +321,8 @@ function Chart() {
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
     return days === 1
-      ? `${date.getHours()}:${date.getMinutes()}${
-          date.getHours() >= 12 ? "PM" : "AM"
-        }`
+      ? `${date.getHours()}:${date.getMinutes()}${date.getHours() >= 12 ? "PM" : "AM"
+      }`
       : date.toLocaleDateString();
   };
 
@@ -334,9 +333,7 @@ function Chart() {
     );
   });
 
-  return (
-    <>
-      {search ? (
+  {/* {search ? (
         <Container>
           <Box
             style={{
@@ -364,115 +361,110 @@ function Chart() {
             ))}
           </Box>
         </Container>
-      ) : null}
-      <Container>
-        <Stack direction="row" spacing={2}>
-          {/*Tabs*/}
-          <Box>
-            {chartDays.map((day) => {
-              return (
-                <SelectButton
-                  key={day.value}
-                  onClick={() => setDays(day.value)}
-                  selected={day.value === days}
-                >
-                  {day.label2}
-                </SelectButton>
-              );
-            })}
-          </Box>
-          <Box>
-            <FormControl>
-              <InputLabel>Cryptocurrency</InputLabel>
-              <Select
-                label="Cryptocurrency"
-                style={{
-                  width: "10vw",
-                }}
-                onChange={handleCoinChange}
-                value={selectedCoin}
+      ) : null} */}
+
+  return (
+    <div className="bg-white m-2 rounded-lg shadow-sm">
+      <div className="flex max-sm:flex-col p-3 lg:pt-6">
+        <Box className="w-1/3 max-sm:w-full py-4 lg:pl-10">
+          {chartDays.map((day) => {
+            return (
+              <SelectButton
+                key={day.value}
+                onClick={() => setDays(day.value)}
+                selected={day.value === days}
               >
-                {coins.map((coin) => (
-                  <MenuItem value={coin.id} key={coin.id}>
-                    {coin.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-          <Box>
-            <FormControl>
-              <InputLabel>Chart type</InputLabel>
-              <Select
-                label="Charttype"
-                style={{
-                  width: "10vw",
-                }}
-                onChange={handleChartChange}
-                value={selectedChart}
-                defaultValue="Line"
-              >
-                <MenuItem value="Line">Line</MenuItem>
-                <MenuItem value="Bar">Bar</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </Stack>
-      </Container>
-      <Container>
-        {/* Chart */}
-        <Box
-          style={{
-            marginTop: 25,
-            padding: 10,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            width: "100%",
-          }}
-        >
-          {!historicData ? (
-            <CircularProgress style={{ color: "black" }} size={50} thickness={2} />
-          ) : (
-            <Box style={{ width: "80%" }}>
-              {selectedChart === "Line" ? (
-                <Line
-                  data={{
-                    labels: historicData.map((coin) => formatDate(coin[0])),
-                    datasets: [
-                      {
-                        label: "Price",
-                        data: historicData.map((coin) => coin[1]),
-                      },
-                    ],
-                  }}
-                  options={{
-                    maintainAspectRatio: false,
-                    responsive: true,
-                  }}
-                />
-              ) : (
-                <Bar
-                  data={{
-                    labels: historicData.map((coin) => formatDate(coin[0])),
-                    datasets: [
-                      {
-                        label: "Price",
-                        data: historicData.map((coin) => coin[1]),
-                      },
-                    ],
-                  }}
-                  options={{
-                    maintainAspectRatio: false,
-                    responsive: true,
-                  }}
-                />
-              )}
-            </Box>
-          )}
+                {day.label2}
+              </SelectButton>
+            );
+          })}
         </Box>
-      </Container>
-    </>
+        <div className="w-2/3 max-sm:w-full flex max-sm:flex-col gap-4 p-2 max-sm:pt-4 ">
+          <FormControl className="w-1/2 max-sm:w-full">
+            <InputLabel>Cryptocurrency</InputLabel>
+            <Select
+              label="Cryptocurrency"
+              onChange={handleCoinChange}
+              value={selectedCoin}
+            >
+              {coins.map((coin) => (
+                <MenuItem value={coin.id} key={coin.id}>
+                  {coin.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl className="w-1/2 max-sm:w-full">
+            <InputLabel>Chart type</InputLabel>
+            <Select
+              label="Charttype"
+              onChange={handleChartChange}
+              value={selectedChart}
+              defaultValue="Line"
+            >
+              <MenuItem value="Line">Line</MenuItem>
+              <MenuItem value="Bar">Bar</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+      </div>
+
+      <div className="w-full h-72 flex justify-center itmes-center">
+        <Container>
+          {/* Chart */}
+          <Box
+            style={{
+              marginTop: 25,
+              padding: 10,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            {!historicData ? (
+              <CircularProgress style={{ color: "black" }} size={50} thickness={2} />
+            ) : (
+              <Box style={{ width: "80%" }}>
+                {selectedChart === "Line" ? (
+                  <Line
+                    data={{
+                      labels: historicData.map((coin) => formatDate(coin[0])),
+                      datasets: [
+                        {
+                          label: "Price",
+                          data: historicData.map((coin) => coin[1]),
+                        },
+                      ],
+                    }}
+                    options={{
+                      maintainAspectRatio: false,
+                      responsive: true,
+                    }}
+                  />
+                ) : (
+                  <Bar
+                    data={{
+                      labels: historicData.map((coin) => formatDate(coin[0])),
+                      datasets: [
+                        {
+                          label: "Price",
+                          data: historicData.map((coin) => coin[1]),
+                        },
+                      ],
+                    }}
+                    options={{
+                      maintainAspectRatio: false,
+                      responsive: true,
+                    }}
+                  />
+                )}
+              </Box>
+            )}
+          </Box>
+        </Container>
+      </div>
+    </div>
   );
 }
 

@@ -32,17 +32,18 @@ function ExcahangeCurrency() {
 
   return (
     <>
-      <Container>
-        <Box>
-          <Stack spacing={2} direction="row">
+      <Container className="w-1/2 bg-white rounded-lg m-2 shadow-sm max-sm:w-full p-4 max-sm:p-2">
+        <div className="flex gap-2 items-center max-sm:flex-col">
+          <div className="w-1/2 max-sm:w-full flex items-center justify-between gap-2">
             <label
+              className="w-2/12 text-center"
               htmlFor="sell"
               style={{ color: "red", fontFamily: "Oswald" }}
             >
               Sell
             </label>
             <Select
-              style={{ width: "10vw", height: "6vh" }}
+              className="w-10/12"
               id="sell"
               value={sellCurrentPrice}
               onChange={(event) => {
@@ -57,14 +58,17 @@ function ExcahangeCurrency() {
                 );
               })}
             </Select>
+          </div>
+          <div className="w-1/2 max-sm:w-full max-sm:mt-2 flex items-center justify-between gap-2">
             <label
+              className="w-2/12 text-center"
               htmlFor="buy"
               style={{ color: "green", fontFamily: "Oswald" }}
             >
               Buy
             </label>
             <Select
-              style={{ width: "10vw", height: "6vh" }}
+              className="w-10/12"
               id="buy"
               value={buyCurrentPrice}
               onChange={(event) => {
@@ -75,8 +79,8 @@ function ExcahangeCurrency() {
                 {coins[0]?.name}
               </MenuItem>
             </Select>
-          </Stack>
-        </Box>
+          </div>
+        </div>
         <Box style={{ marginTop: "25px", marginLeft: "40px" }}>
           <Stack spacing={2} direction="row">
             <input
@@ -99,18 +103,18 @@ function ExcahangeCurrency() {
             </Button>
           </Stack>
         </Box>
-        <Box style={{ marginTop: "25px", marginLeft: "40px",fontSize:"2rem"}}>
-            <Stack spacing={2} direction="row">
+        <Box style={{ marginTop: "25px", marginLeft: "40px", fontSize: "2rem" }}>
+          <Stack spacing={2} direction="row">
             <span
-          style={{
-            fontWeight: "bold",
-            fontFamily: "oswald",
-            
-          }}
-        >
-          Total: {totalBtc}
-        </span>
-            </Stack>
+              style={{
+                fontWeight: "bold",
+                fontFamily: "oswald",
+
+              }}
+            >
+              Total: {totalBtc}
+            </span>
+          </Stack>
         </Box>
       </Container>
     </>

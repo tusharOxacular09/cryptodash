@@ -29,9 +29,9 @@ function Portfolio() {
   },[]);
 
   console.log("sleicedcOINS::", slicedCoins);
-  // console.log("sleicedcOINS-name::", slicedCoins[1].name);
+
   return (
-    <>
+    <div className="w-1/2 max-sm:w-full bg-white m-2 rounded-lg shadow-sm flex flex-col items-center">
       <Container>
         <span
           style={{
@@ -83,14 +83,7 @@ function Portfolio() {
             slicedCoins[2]?.current_price}
         </span>
       </Container>
-      <Container>
-        <Box
-          style={{
-            // backgroundColor: "grey",
-            width: "50%",
-            height: "50%",
-          }}
-        >
+      <Container className="py-2">
           <Pie
             data={{
               labels: [
@@ -114,10 +107,6 @@ function Portfolio() {
             options={{
               maintainAspectRatio: false,
               responsive: true,
-            }}
-            style={{
-              width: "70%",
-              height: "70%",
             }}
           />
           {/* <Pie
@@ -152,9 +141,8 @@ function Portfolio() {
               height:"50%"
             }}
           /> */}
-        </Box>
       </Container>
-    </>
+    </div>
   );
 }
 

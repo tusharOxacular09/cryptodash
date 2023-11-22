@@ -1,20 +1,11 @@
 import React from "react";
-import { Container, Typography, Paper } from "@mui/material";
+
 const Header = function () {
   return (
-    <>
-      <header>
-        <Paper>
-          <Container style={{ marginLeft: 80, padding: 10 }}>
-            <Typography
-              style={{ fontSize: 40, fontFamily: "oswald", fontWeight: "bold" }}
-            >
-              Crypto Currency
-            </Typography>
-          </Container>
-        </Paper>
-      </header>
-    </>
+    <header className="bg-blue-900 text-white w-full h-20 max-sm:h-16 text-2xl font-medium max-sm:text-lg flex items-center pl-8 max-sm:pl-2">
+       Cryptocurrency Dashboard
+    </header>
   );
 };
+
 export default Header;

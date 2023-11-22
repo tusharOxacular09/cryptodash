@@ -1,21 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { TrendingCoins, CoinList } from "../../config/api";
-import {
-  Typography,
-  Container,
-  Table,
-  TableContainer,
-  LinearProgress,
-  TableCell,
-  TableHead,
-  TableRow,
-  TableBody,
-  Pagination,
-} from "@mui/material";
+
 
 function Sidebar() {
   const [page, setPage] = useState(1);
+  const [coins, setCoins] = useState([]);
 
   const currency = useSelector((state) => state.currency.value);
 
@@ -34,9 +24,6 @@ function Sidebar() {
     setLoading(false);
   }
 
-  // useEffect(() => {
-  //   fetchCoins();
-  // }, [currency]);
 
   const handleSearch = () => {
     if (search) {
@@ -50,126 +37,96 @@ function Sidebar() {
     }
     return trending; //state
   };
-console.log(trending);
+
+  // displaying a static data
+  async function fetchCoins() {
+    try {
+      const jsonData = await fetch(
+        "https://tusharoxacular09.github.io/cryptocurrency_api/api.json"
+      );
+      const mycoins = await jsonData.json();
+      setCoins(mycoins.slice(0, 20));
+    } catch (error) {
+      alert(`${error.message} : You've exceeded the Rate Limit`);
+    }
+  }
+
+  useEffect(()=> {
+    fetchCoins();
+  }, [])
+
+
   return (
-    <>
-      <Container style={{ backgroundColor: "yellow" }}>
-        <Typography
-          variant="h6"
-          style={{ fontFamily: "Merriweather", fontWeight: "bold" }}
-        >
-          Cryptocurrency by
-          <br />
-          market cap
-        </Typography>
-        <TableContainer>
-          {loading ? (
-            <LinearProgress
-              style={{ backgroundColor: "rgba(86, 172, 255, 0.8)" }}
-            ></LinearProgress>
-          ) : (
-            <Table>
-              <TableHead>
-                <TableRow>
-                  {["Coin", "Price", "Market Cap"].map((head) => {
-                    return (
-                      <TableCell
-                        style={{
-                          fontWeight: 700,
-                          color: "black",
-                          fontFamily: "Merriweather",
-                        }}
-                        key={head}
-                        align={head === "Coin" ? "" : "right"}
+    <div className="p-4 bg-white shadow-sm rounded-lg m-3">
+      <p className="text-xl font-semibold pb-2">Cryptocurrency By <br /> Market Cap</p>
+      <div className="overflow-x-scroll h-[800px] max-lg:h-[500px] scrollbar-hide">
+        {
+          coins.map((currency, i) => {
+            return (
+              <div
+                key={i}
+                className="border-b px-6 py-4 max-sm:px-3 max-sm:py-2 flex justify-between items-center"
+              >
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-2">
+                    <img
+                      src={currency.image}
+                      alt="IMG"
+                      className="w-[18px] rounded-full"
+                    />
+                    <p className="font-medium">{currency.name}</p>
+                  </div>
+                  <p className="text-sm text-gray-500">
+                    Mkt.Cap ₹{currency.market_cap}
+                  </p>
+                </div>
+                <div className="flex justify-center items-center">
+                  {currency.price_change_percentage_24h > 0 && (
+                    <div className="flex justify-between items-center">
+                      <svg
+                        width="30px"
+                        height="30px"
+                        viewBox="0 0 12 22"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
-                        {head}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {handleSearch()
-                  .slice((page - 1) * 10, (page - 1) * 10 + 10)
-                  .map((row) => {
-                    const profit = row.price_change_percentage_24h > 0;
+                        <path
+                          d="M12.1921 9.23047L15.9065 13.6879C16.3408 14.2089 15.9702 15 15.292 15L8.70803 15C8.02976 15 7.65924 14.2089 8.09346 13.6879L11.8079 9.23047C11.9079 9.11053 12.0921 9.11053 12.1921 9.23047Z"
+                          fill="#69ca00"
+                        />
+                      </svg>
+                      <p className="text-green-500 font-semibold pl-2">
+                        {currency.price_change_percentage_24h.toFixed(2)}%
+                      </p>
+                    </div>
+                  )}
+                  {currency.price_change_percentage_24h < 0 && (
+                    <div className="flex justify-between items-center">
+                      <svg
+                        width="30px"
+                        height="30px"
+                        viewBox="0 0 12 22"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M11.8079 14.7695L8.09346 10.3121C7.65924 9.79109 8.02976 9 8.70803 9L15.292 9C15.9702 9 16.3408 9.79108 15.9065 10.3121L12.1921 14.7695C12.0921 14.8895 11.9079 14.8895 11.8079 14.7695Z"
+                          fill=" #ff8000"
+                        />
+                      </svg>
+                      <p className="text-orange-500 font-semibold pl-1">
+                        {currency.price_change_percentage_24h.toFixed(2)}%
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
 
-                    return (
-                      <TableRow key={row.id}>
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          style={{ display: "flex", gap: 15 }}
-                        >
-                          <img
-                            src={row.image}
-                            alt={row.name}
-                            height="50"
-                            style={{ marginBottom: 10 }}
-                          />
-                          <div
-                            style={{ display: "flex", flexDirection: "column" }}
-                          >
-                            <span
-                              style={{
-                                textTransform: "uppercase",
-                                fontSize: 18,
-                                fontFamily: "Merriweather",
-                              }}
-                            >
-                              {row.symbol}
-                            </span>
-                            <span
-                              style={{
-                                color: "darkgrey",
-                                fontFamily: "Merriweather",
-                              }}
-                            >
-                              {row.name}
-                            </span>
-                          </div>
-                        </TableCell>
-
-                        <TableCell
-                          align="right"
-                          style={{
-                            color: profit > 0 ? "rgb(14,203,129)" : "red",
-                            fontWeight: 500,
-                          }}
-                        >
-                          {symbol.concat(row.current_price.toString())}
-                          <br />
-                          {profit && "+"}
-                          {row.price_change_percentage_24h.toFixed(2)}%
-                        </TableCell>
-
-                        <TableCell align="right">
-                          {symbol.concat(
-                            row.market_cap.toString().slice(0, -6)
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-              </TableBody>
-            </Table>
-          )}
-        </TableContainer>
-        <Pagination
-          style={{
-            display: "flex",
-            padding: 20,
-            width: "100%",
-            justifyContent: "center",
-          }}
-          count={(handleSearch().length / 10).toFixed(0)}
-          onChange={(_, value) => {
-            setPage(value);
-            window.scroll(0, 450);
-          }}
-        />
-      </Container>
-    </>
+            )
+          })
+        }
+      </div>
+    </div>
   );
 }
 export default Sidebar;
